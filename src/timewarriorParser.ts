@@ -1,11 +1,13 @@
 import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
 import {Timecard} from "./types/Timecard";
-import config from "./config.json";
 import {padTimeElement} from "./timeUtils";
+import {readFileSync} from 'fs';
 
 const parseHour = (hourString: string): number => {
   return parseInt(hourString, 10) + 2;
 }
+
+const config = JSON.parse(readFileSync('config.json').toString('utf8'));
 
 const getIconNameForTags = (tags: string[]) => {
   const logos = config.logoForTag;
