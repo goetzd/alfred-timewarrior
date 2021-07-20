@@ -1,10 +1,7 @@
-import {TimewarriorTimecard} from "./TimewarriorTimecard";
-import {Timecard} from "./Timecard";
+import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
+import {Timecard} from "./types/Timecard";
 import config from "./config.json";
-
-const padTimeElement = (hoursOrMinutes: number) => {
-  return ('00' + hoursOrMinutes).slice(-2);
-}
+import {padTimeElement} from "./timeUtils";
 
 const parseHour = (hourString: string): number => {
   return parseInt(hourString, 10) + 2;
@@ -20,7 +17,6 @@ const getIconNameForTags = (tags: string[]) => {
   const logoFileName = config.logoForTag[firstTag];
   return logoFileName ?? config.logoForTag.DefaultLogo ?? '';
 }
-
 
 export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
   const id = timecard.id.toFixed(0);

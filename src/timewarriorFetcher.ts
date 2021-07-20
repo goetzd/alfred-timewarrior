@@ -1,4 +1,4 @@
-import {TimewarriorTimecard} from "./TimewarriorTimecard";
+import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
 import {execSync} from "child_process";
 
 export const fetchFromTimewarrior = (timewExecutable: string, command: TimewarriorCommand): TimewarriorTimecard[] => {

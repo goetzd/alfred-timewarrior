@@ -4,7 +4,8 @@ type AlfredItem = {
   icon?: TimecardIcon,
   text?: TimecardText,
   autocomplete?: string,
-  valid?: boolean
+  valid?: boolean,
+  arg?: string
 };
 
 type TimecardTimewarriorItems = {
@@ -20,12 +21,22 @@ export type Timecard = AlfredItem & TimecardTimewarriorItems;
 
 export type AlfredItems = {
   items: AlfredItem[]
-}
+};
 
 export type TimecardIcon = {
   path: string;
-}
+};
 
 export type TimecardText = {
   copy: string;
-}
+};
+
+export const toAlfredItem = (timecard: Timecard): AlfredItem => ({
+  title: timecard.title,
+  subtitle: timecard.subtitle,
+  icon: timecard.icon,
+  text: timecard.text,
+  autocomplete: timecard.autocomplete,
+  valid: timecard.valid,
+  arg: timecard.arg
+})
