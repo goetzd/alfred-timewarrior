@@ -1,6 +1,6 @@
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
 import config from "../config.json";
-import {getDateStringRoundedBy} from "../timeUtils";
+import {getDateStringWithRoundedGranularityInMinutes} from "../timeUtils";
 import {parseTimecard} from "../timewarriorParser";
 import {AlfredItems, toAlfredItem} from "../types/Timecard";
 
@@ -20,7 +20,7 @@ export const split = (parameters: string): AlfredItems => {
   let valid = true
   if (parameters === '') {
     const now = new Date();
-    splitTime = getDateStringRoundedBy(now, 3);
+    splitTime = getDateStringWithRoundedGranularityInMinutes(now, 3);
   } else {
     const details = parameters.split(':');
     const hours = details[0] ?? '';

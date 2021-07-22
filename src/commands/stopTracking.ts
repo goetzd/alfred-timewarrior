@@ -1,7 +1,7 @@
 import {AlfredItems, toAlfredItem} from "../types/Timecard";
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
 import config from "../config.json";
-import {getDateStringRoundedBy} from "../timeUtils";
+import {getDateStringWithRoundedGranularityInMinutes} from "../timeUtils";
 import {parseTimecard} from "../timewarriorParser";
 
 export const stopTracking = (parameters: string): AlfredItems => {
@@ -11,7 +11,7 @@ export const stopTracking = (parameters: string): AlfredItems => {
   let stopTime = parameters;
   if (parameters === '') {
     const now = new Date();
-    stopTime = getDateStringRoundedBy(now, 3);
+    stopTime = getDateStringWithRoundedGranularityInMinutes(now, 3);
   }
 
   const resultJson = parseTimecard(singleElement!);

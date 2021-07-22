@@ -2,6 +2,7 @@ import {AlfredItems, toAlfredItem} from "../types/Timecard";
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
 import config from "../config.json";
 import {parseTimecard} from "../timewarriorParser";
+import {getDateStringWithFlooredGranularityInMinutes} from "../timeUtils";
 
 export const continueTracking = (parameters: string): AlfredItems => {
   const json = fetchFromTimewarrior(config.timewExecutable, TimewarriorCommand.NOW);
@@ -20,15 +21,21 @@ export const continueTracking = (parameters: string): AlfredItems => {
     }
   }
 
+  let stopTime = parameters;
+  if (parameters === '') {
+    const now = new Date();
+    stopTime = getDateStringWithFlooredGranularityInMinutes(now, 3);
+  }
+
   let subtitle = 'Syntax: <Timestamp>'
   return {
     items: [
       {
-        title: `⏯ ${parameters}`,
+        title: `⏯ ${stopTime}`,
         subtitle,
-        arg: `continue ${parameters}`,
+        arg: `continue ${stopTime}`,
         text: {
-          copy: `timew continue ${parameters}`
+          copy: `timew continue ${stopTime}`
         }
       }
     ]
