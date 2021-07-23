@@ -7,15 +7,15 @@ const parseHour = (hourString: string): number => {
   return parseInt(hourString, 10) + 2;
 }
 
-const getIconNameForTags = (tags: string[]) => {
+const getIconNameForTags = (tags: string[]): string => {
   const logos = configuration.logoForTag;
 
   const firstTag = tags[0] as keyof typeof logos;
   if (firstTag === undefined) {
-    return configuration.logoForTag.DefaultLogo;
+    return configuration.logoForTag.DefaultIcon ?? '';
   }
   const logoFileName = configuration.logoForTag[firstTag];
-  return logoFileName ?? configuration.logoForTag.DefaultLogo ?? '';
+  return logoFileName ?? configuration.logoForTag.DefaultIcon ?? '';
 }
 
 export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
@@ -49,7 +49,7 @@ export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
     title: `${tags.join(', ')}: ${padTimeElement(startDay)}.${padTimeElement(startMonth)}. ${padTimeElement(startHours)}:${padTimeElement(startMinutes)}${endString}`,
     subtitle: annotation,
     icon: {
-      path: `./icons/${iconName}`
+      path: iconName
     },
     tags,
     startTime,

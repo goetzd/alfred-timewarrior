@@ -21,7 +21,7 @@
     "typescript-eslint": "^0.0.1-alpha.0"
   },
   "scripts": {
-    "build": "ncc build src/timewarrior.ts -m && mv dist/index.js dist/timewarrior.js && cp -r src/icons dist/icons",
+    "build": "ncc build src/timewarrior.ts -m && mv dist/index.js dist/timewarrior.js",
     "package": "npm run build && cp alfred/* dist && chmod +x dist/execute.sh",
     "test": "jest"
   }

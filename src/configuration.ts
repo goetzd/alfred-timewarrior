@@ -1,4 +1,10 @@
 import {readFileSync} from "fs";
+import * as Path from "path";
+import {homedir} from "os";
+
+type Icons = {
+  [key: string]: string
+};
 
 export type Configuration = {
   timewExecutable: string,
@@ -8,4 +14,40 @@ export type Configuration = {
   }
 };
 
-export const configuration: Configuration = JSON.parse(readFileSync('config.json').toString('utf8'));
+const defaultConfiguration: Configuration = {
+  timewExecutable: '/usr/local/bin/timew',
+  granularityInMinutes: 1,
+  logoForTag: {
+    DefaultIcon: 'icon.png'
+  }
+};
+
+const parseFile = (path: string) => {
+  try {
+    return JSON.parse(readFileSync(path).toString('utf8'));
+  } catch {
+    return undefined;
+  }
+}
+
+const parseIcons = (logoForTag: Icons): Icons => {
+  if (logoForTag === undefined || Object.keys(logoForTag).length === 0) {
+    return defaultConfiguration.logoForTag;
+  }
+
+  Object.keys(logoForTag).map(key => logoForTag[key] = `${homedir()}/.alfred-timewarrior/${logoForTag[key]}`);
+
+  return logoForTag;
+}
+
+const parseConfigurationJson = (): Configuration => {
+  let config = parseFile(Path.join(homedir(), '.alfred-timewarrior/alfred-timewarrior.json'));
+
+  return {
+    timewExecutable: config?.timewExecutable ?? defaultConfiguration.timewExecutable,
+    granularityInMinutes: parseInt(config?.granularityInMinutes, 10) ?? defaultConfiguration.granularityInMinutes,
+    logoForTag: parseIcons(config?.logoForTag)
+  }
+}
+
+export const configuration: Configuration = parseConfigurationJson();

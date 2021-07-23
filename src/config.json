@@ -1,7 +1,0 @@
-{
-    "timewExecutable": "/usr/local/bin/timew",
-    "granularityInMinutes": "1",
-    "logoForTag": {
-        "DefaultLogo": "Default.png"
-    }
-}
