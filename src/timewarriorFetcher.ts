@@ -1,8 +1,9 @@
 import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
 import {execSync} from "child_process";
+import {configuration} from "./configuration";
 
-export const fetchFromTimewarrior = (timewExecutable: string, command: TimewarriorCommand): TimewarriorTimecard[] => {
-  const result = execSync(`${timewExecutable} ${command}`);
+export const fetchFromTimewarrior = (command: TimewarriorCommand): TimewarriorTimecard[] => {
+  const result = execSync(`${configuration.timewExecutable} ${command}`);
   return JSON.parse(result.toString('utf8'));
 };
 

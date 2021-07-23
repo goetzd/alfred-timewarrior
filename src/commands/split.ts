@@ -1,11 +1,10 @@
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
-import config from "../config.json";
-import {getDateStringWithRoundedGranularityInMinutes} from "../timeUtils";
+import {getDateStringWithRoundedGranularity} from "../timeUtils";
 import {parseTimecard} from "../timewarriorParser";
 import {AlfredItems, toAlfredItem} from "../types/Timecard";
 
 export const split = (parameters: string): AlfredItems => {
-  const json = fetchFromTimewarrior(config.timewExecutable, TimewarriorCommand.NOW);
+  const json = fetchFromTimewarrior(TimewarriorCommand.NOW);
   if (json.length === 0) {
     return {
       items: [
@@ -20,7 +19,7 @@ export const split = (parameters: string): AlfredItems => {
   let valid = true
   if (parameters === '') {
     const now = new Date();
-    splitTime = getDateStringWithRoundedGranularityInMinutes(now, 3);
+    splitTime = getDateStringWithRoundedGranularity(now);
   } else {
     const details = parameters.split(':');
     const hours = details[0] ?? '';

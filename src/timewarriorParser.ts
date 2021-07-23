@@ -1,23 +1,21 @@
 import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
 import {Timecard} from "./types/Timecard";
 import {padTimeElement} from "./timeUtils";
-import {readFileSync} from 'fs';
+import {configuration} from "./configuration";
 
 const parseHour = (hourString: string): number => {
   return parseInt(hourString, 10) + 2;
 }
 
-const config = JSON.parse(readFileSync('config.json').toString('utf8'));
-
 const getIconNameForTags = (tags: string[]) => {
-  const logos = config.logoForTag;
+  const logos = configuration.logoForTag;
 
   const firstTag = tags[0] as keyof typeof logos;
   if (firstTag === undefined) {
-    return config.logoForTag.DefaultLogo;
+    return configuration.logoForTag.DefaultLogo;
   }
-  const logoFileName = config.logoForTag[firstTag];
-  return logoFileName ?? config.logoForTag.DefaultLogo ?? '';
+  const logoFileName = configuration.logoForTag[firstTag];
+  return logoFileName ?? configuration.logoForTag.DefaultLogo ?? '';
 }
 
 export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {

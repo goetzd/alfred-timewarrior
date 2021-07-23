@@ -1,11 +1,10 @@
 import {AlfredItems, toAlfredItem} from "../types/Timecard";
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
-import config from "../config.json";
 import {parseTimecard} from "../timewarriorParser";
-import {getDateStringWithFlooredGranularityInMinutes} from "../timeUtils";
+import {getDateStringWithFlooredGranularity} from "../timeUtils";
 
 export const continueTracking = (parameters: string): AlfredItems => {
-  const json = fetchFromTimewarrior(config.timewExecutable, TimewarriorCommand.NOW);
+  const json = fetchFromTimewarrior(TimewarriorCommand.NOW);
 
   if (json.length > 0) {
     const singleElement = parseTimecard(json[0]!);
@@ -24,7 +23,7 @@ export const continueTracking = (parameters: string): AlfredItems => {
   let stopTime = parameters;
   if (parameters === '') {
     const now = new Date();
-    stopTime = getDateStringWithFlooredGranularityInMinutes(now, 3);
+    stopTime = getDateStringWithFlooredGranularity(now);
   }
 
   let subtitle = 'Syntax: <Timestamp>'

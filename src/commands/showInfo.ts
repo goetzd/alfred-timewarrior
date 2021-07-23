@@ -1,10 +1,9 @@
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
-import config from "../config.json";
 import {parseTimecard} from "../timewarriorParser";
 import {AlfredItems} from "../types/Timecard";
 
 export const showInfo = (): AlfredItems => {
-  const jsonToday = fetchFromTimewarrior(config.timewExecutable, TimewarriorCommand.TODAY);
+  const jsonToday = fetchFromTimewarrior(TimewarriorCommand.TODAY);
   const timecardsToday = jsonToday.map(parseTimecard);
 
   let durationToday = 0;
@@ -19,7 +18,7 @@ export const showInfo = (): AlfredItems => {
 
   const tags = [...new Set(timecardsToday.flatMap(item => item.tags))];
 
-  const jsonMonth = fetchFromTimewarrior(config.timewExecutable, TimewarriorCommand.START_OF_MONTH_UNTIL_NOW);
+  const jsonMonth = fetchFromTimewarrior(TimewarriorCommand.START_OF_MONTH_UNTIL_NOW);
   const timecardsMonth = jsonMonth.map(parseTimecard);
 
   let durationMonth = 0;
