@@ -5,14 +5,20 @@ export const padTimeElement = (hoursOrMinutes: number) => {
 }
 
 export const getDateStringWithRoundedGranularity = (date: Date) => {
-  const roundedMinutes = Math.round(date.getMinutes() / configuration.granularityInMinutes) * configuration.granularityInMinutes;
+  const decimalMinutes = getDecimalMinutes(date);
+  const roundedMinutes = Math.round(decimalMinutes / configuration.granularityInMinutes) * configuration.granularityInMinutes;
   return createHhMmString(date.getHours(), roundedMinutes);
 }
 
 export const getDateStringWithFlooredGranularity = (date: Date) => {
-  const flooredMinutes = Math.floor(date.getMinutes() / configuration.granularityInMinutes) * configuration.granularityInMinutes;
+  const decimalMinutes = getDecimalMinutes(date);
+  const flooredMinutes = Math.floor(decimalMinutes / configuration.granularityInMinutes) * configuration.granularityInMinutes;
   return createHhMmString(date.getHours(), flooredMinutes);
 }
+
+const getDecimalMinutes = (date: Date) => {
+  return date.getMinutes() + (date.getSeconds() / 60);
+};
 
 const createHhMmString = (hours: number, minutes: number): string => {
   if (minutes >= 60) {
