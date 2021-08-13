@@ -1,13 +1,14 @@
 import {fetchFromTimewarrior, TimewarriorCommand} from "../timewarriorFetcher";
 import {parseTimecard} from "../timewarriorParser";
-import {AlfredItems} from "../types/Timecard";
+import {AlfredItems, Timecard} from "../types/Timecard";
+import {configuration} from "../configuration";
 
 export const showInfo = (): AlfredItems => {
   const jsonToday = fetchFromTimewarrior(TimewarriorCommand.TODAY);
   const timecardsToday = jsonToday.map(parseTimecard);
 
   let durationToday = 0;
-  timecardsToday.forEach(item => durationToday += item.durationInMin);
+  timecardsToday.forEach(item => durationToday += calculateTimeWithoutIgnoredTags(item));
   const totalHoursToday = Math.floor(durationToday / 60);
   const totalMinutesToday = Math.round(durationToday - totalHoursToday * 60);
   const overtimeToday = durationToday - (8 * 60);
@@ -22,7 +23,7 @@ export const showInfo = (): AlfredItems => {
   const timecardsMonth = jsonMonth.map(parseTimecard);
 
   let durationMonth = 0;
-  timecardsMonth.forEach(item => durationMonth += item.durationInMin);
+  timecardsMonth.forEach(item => durationMonth += calculateTimeWithoutIgnoredTags(item));
   const numberOfDaysTrackedThisMonth = [...new Set(timecardsMonth.flatMap(item => item.startTime.getDate()))].length;
   const totalHoursMonth = Math.floor(durationMonth / 60);
   const totalMinutesMonth = Math.round(durationMonth - totalHoursMonth * 60);
@@ -50,4 +51,10 @@ export const showInfo = (): AlfredItems => {
       }
     ]
   };
+}
+
+const calculateTimeWithoutIgnoredTags = (timecard: Timecard) => {
+  const ignoredTags = configuration.ignoredTagsForWorkingTime;
+  const ignoredTagFound = ignoredTags.filter((tag) => timecard.tags.includes(tag)).length > 0;
+  return ignoredTagFound ? 0 : timecard.durationInMin;
 }

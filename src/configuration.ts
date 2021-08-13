@@ -9,6 +9,7 @@ type Icons = {
 export type Configuration = {
   timewExecutable: string,
   granularityInMinutes: number,
+  ignoredTagsForWorkingTime: string[],
   logoForTag: {
     [key: string]: string
   }
@@ -17,6 +18,7 @@ export type Configuration = {
 const defaultConfiguration: Configuration = {
   timewExecutable: '/usr/local/bin/timew',
   granularityInMinutes: 1,
+  ignoredTagsForWorkingTime: [],
   logoForTag: {
     DefaultIcon: 'icon.png'
   }
@@ -46,6 +48,7 @@ const parseConfigurationJson = (): Configuration => {
   return {
     timewExecutable: config?.timewExecutable ?? defaultConfiguration.timewExecutable,
     granularityInMinutes: parseInt(config?.granularityInMinutes, 10) ?? defaultConfiguration.granularityInMinutes,
+    ignoredTagsForWorkingTime: config?.ignoredTagsForWorkingTime ?? defaultConfiguration.ignoredTagsForWorkingTime,
     logoForTag: parseIcons(config?.logoForTag)
   }
 }

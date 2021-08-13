@@ -22,12 +22,13 @@ In your home directory, create a directory `.alfred-timewarrior`:
 mkdir ~/.alfred-timewarrior 
 ```
 
-In this folder, create a file `alfred-timewarrior.json` with the following content.:
+In this folder, create a file `alfred-timewarrior.json` with the following example content:
 
 ```json
 {
   "timewExecutable": "/usr/local/bin/timew",
   "granularityInMinutes": "1",
+  "ignoredTagsForWorkingTime": [],
   "logoForTag": {
     "<tag>": "<iconPathRelativeToAlfredTimewarriorFolder>"
   }
@@ -42,6 +43,8 @@ This file provides a couple of options:
   other places of `alfred-timewarrior`. The default is `1`, meaning that timestamps are by default rounded to one
   minute. Why would you use this? For my day to day projects, I am required to only book times with a granularity of
   three minutes because this converts easily into decimal numbers with a precision of two (e.g. 3 minutes = 0.05 hours).
+- `ignoredTagsForWorkingTime` is a list of tags which should be ignored for determining working time. This can be used
+  if lunch breaks are tracked using their own tag but are obviously not work time, for example.
 - `logoForTag` contains a map of tags to images/icons on your harddrive. This means that if you want specific icons for
   different clients/projects/etc. it is easy to define them here. The value must be a relative(!) path from inside
   the `~/.alfred-timewarrior` folder. I.e. if you have an icon `~/.alfred-timewarrior/icon/client1.png` which should be
