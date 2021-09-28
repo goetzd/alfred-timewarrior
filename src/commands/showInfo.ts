@@ -37,7 +37,7 @@ export const showInfo = (): AlfredItems => {
     items: [
       {
         title: `Total time today: ${totalHoursToday}h ${totalMinutesToday}min`,
-        subtitle: `Tags: ${tags.join(', ')}`,
+        subtitle: `🏷 ${tags.join(' 🏷 ')}`,
         valid: false
       },
       {

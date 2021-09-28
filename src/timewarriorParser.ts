@@ -38,16 +38,18 @@ export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
     const endDay = parseInt(timecard.end.substring(6, 8));
     const endHours = parseHour(timecard.end.substring(9, 11));
     const endMinutes = parseInt(timecard.end.substring(11, 13));
-    endString = ` – ${padTimeElement(endHours)}:${padTimeElement(endMinutes)}`;
+    endString = ` →️ ${padTimeElement(endHours)}:${padTimeElement(endMinutes)}`;
     endTime = new Date(endYear, endMonth - 1, endDay, endHours, endMinutes, 0, 0);
   }
 
   const iconName = getIconNameForTags(tags);
 
+  const displayTags = tags.length > 0 ? `🏷 ${tags.join(' 🏷 ')}` : '';
+
   return {
     id,
-    title: `${tags.join(', ')}: ${padTimeElement(startDay)}.${padTimeElement(startMonth)}. ${padTimeElement(startHours)}:${padTimeElement(startMinutes)}${endString}`,
-    subtitle: annotation,
+    title: `${displayTags} 📅 ${padTimeElement(startDay)}.${padTimeElement(startMonth)}. 🕚 ${padTimeElement(startHours)}:${padTimeElement(startMinutes)}${endString}`,
+    subtitle: `📝 ${annotation}`,
     icon: {
       path: iconName
     },
