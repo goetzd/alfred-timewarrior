@@ -1,6 +1,6 @@
-import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
-import {execSync} from "child_process";
-import {configuration} from "./configuration";
+import { execSync } from "child_process";
+import { configuration } from "./configuration";
+import { TimewarriorTimecard } from "./types/TimewarriorTimecard";
 
 export const fetchFromTimewarrior = (command: TimewarriorCommand): TimewarriorTimecard[] => {
   const result = execSync(`${configuration.timewExecutable} ${command}`);
@@ -10,6 +10,7 @@ export const fetchFromTimewarrior = (command: TimewarriorCommand): TimewarriorTi
 export enum TimewarriorCommand {
   NOW = 'export now',
   START_OF_MONTH_UNTIL_NOW = 'export som - now',
+  START_OF_MONTH_UNTIL_NOW_EXCLUDING_TODAY = 'export som - today',
   START_OF_PREVIOUS_WEEK_UNTIL_NOW = 'export sopw - now',
   TODAY = 'export today'
 }
