@@ -1,4 +1,4 @@
-import {AlfredItems} from "../types/Timecard";
+import { AlfredItems } from "../types/Timecard";
 
 const fullHelp: AlfredItems = {
   items: [
@@ -48,6 +48,12 @@ const fullHelp: AlfredItems = {
       title: 'undo',
       subtitle: 'Undo your last action',
       autocomplete: 'undo',
+      valid: false
+    },
+    {
+      title: 'undo-split',
+      subtitle: 'Undo your last two actions (as necessary for undoing a split)',
+      autocomplete: 'undo-split',
       valid: false
     }
   ]

@@ -1,14 +1,15 @@
-import {AlfredItems} from "./types/Timecard";
-import {continueTracking} from "./commands/continueTracking";
-import {annotate} from "./commands/annotate";
-import {showInfo} from "./commands/showInfo";
-import {retag} from "./commands/retag";
-import {split} from "./commands/split";
-import {startTracking} from "./commands/startTracking";
-import {stopTracking} from "./commands/stopTracking";
-import {undo} from "./commands/undo";
-import {showStatus} from "./commands/showStatus";
-import {showHelp} from "./commands/showHelp";
+import { annotate } from "./commands/annotate";
+import { continueTracking } from "./commands/continueTracking";
+import { retag } from "./commands/retag";
+import { showHelp } from "./commands/showHelp";
+import { showInfo } from "./commands/showInfo";
+import { showStatus } from "./commands/showStatus";
+import { split } from "./commands/split";
+import { startTracking } from "./commands/startTracking";
+import { stopTracking } from "./commands/stopTracking";
+import { undo } from "./commands/undo";
+import { undoSplit } from "./commands/undoSplit";
+import { AlfredItems } from "./types/Timecard";
 
 const args = process.argv.slice(2).join(' ').trim().split(' ');
 const action = args[0]?.trim() ?? '';
@@ -43,6 +44,9 @@ switch (action) {
     break;
   case 'undo':
     result = undo();
+    break;
+  case 'undo-split':
+    result = undoSplit();
     break;
   default:
     result = showHelp(action);
