@@ -1,10 +1,19 @@
-import {TimewarriorTimecard} from "./types/TimewarriorTimecard";
-import {Timecard} from "./types/Timecard";
-import {padTimeElement} from "./timeUtils";
-import {configuration} from "./configuration";
+import { configuration } from "./configuration";
+import { padTimeElement } from "./timeUtils";
+import { Timecard } from "./types/Timecard";
+import { TimewarriorTimecard } from "./types/TimewarriorTimecard";
 
-const parseHour = (hourString: string): number => {
-  return parseInt(hourString, 10) + 2;
+const stringToDate = (dateTimeString: string): Date => {
+  const year = parseInt(dateTimeString.substring(0, 4));
+  const month = parseInt(dateTimeString.substring(4, 6));
+  const day = parseInt(dateTimeString.substring(6, 8));
+  const hours = parseInt(dateTimeString.substring(9, 11), 10);
+  const minutes = parseInt(dateTimeString.substring(11, 13));
+  const dateInUtc = new Date(year, month - 1, day, hours, minutes, 0, 0);
+
+  const timezoneHourOffset = dateInUtc.getTimezoneOffset() / 60;
+
+  return new Date(year, month - 1, day, hours - timezoneHourOffset, minutes, 0, 0);
 }
 
 const getIconNameForTags = (tags: string[]): string => {
@@ -23,23 +32,13 @@ export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
   const tags = timecard.tags ?? [];
   const annotation = timecard.annotation ?? '<No annotation>';
 
-  const startYear = parseInt(timecard.start.substring(0, 4));
-  const startMonth = parseInt(timecard.start.substring(4, 6));
-  const startDay = parseInt(timecard.start.substring(6, 8));
-  const startHours = parseHour(timecard.start.substring(9, 11));
-  const startMinutes = parseInt(timecard.start.substring(11, 13));
-  const startTime = new Date(startYear, startMonth - 1, startDay, startHours, startMinutes, 0, 0);
+  const startTime = stringToDate(timecard.start);
 
   let endString = '';
   let endTime = new Date();
   if (timecard.end !== undefined) {
-    const endYear = parseInt(timecard.end.substring(0, 4));
-    const endMonth = parseInt(timecard.end.substring(4, 6));
-    const endDay = parseInt(timecard.end.substring(6, 8));
-    const endHours = parseHour(timecard.end.substring(9, 11));
-    const endMinutes = parseInt(timecard.end.substring(11, 13));
-    endString = ` →️ ${padTimeElement(endHours)}:${padTimeElement(endMinutes)}`;
-    endTime = new Date(endYear, endMonth - 1, endDay, endHours, endMinutes, 0, 0);
+    endTime = stringToDate(timecard.end);
+    endString = ` →️ ${padTimeElement(endTime.getHours())}:${padTimeElement(endTime.getMinutes())}`;
   }
 
   const iconName = getIconNameForTags(tags);
@@ -48,7 +47,7 @@ export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
 
   return {
     id,
-    title: `${displayTags} 📅 ${padTimeElement(startDay)}.${padTimeElement(startMonth)}. 🕚 ${padTimeElement(startHours)}:${padTimeElement(startMinutes)}${endString}`,
+    title: `${displayTags} 📅 ${padTimeElement(startTime.getDate())}.${padTimeElement(startTime.getMonth() + 1)}. 🕚 ${padTimeElement(startTime.getHours())}:${padTimeElement(startTime.getMinutes())}${endString}`,
     subtitle: `📝 ${annotation}`,
     icon: {
       path: iconName
