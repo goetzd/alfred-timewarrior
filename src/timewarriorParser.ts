@@ -34,20 +34,24 @@ export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
 
   const startTime = stringToDate(timecard.start);
 
-  let endString = '';
+  let endString = '\t      ✈️     ';
   let endTime = new Date();
   if (timecard.end !== undefined) {
     endTime = stringToDate(timecard.end);
-    endString = ` →️ ${padTimeElement(endTime.getHours())}:${padTimeElement(endTime.getMinutes())}`;
+    endString = `\t🛬 ${padTimeElement(endTime.getHours())}:${padTimeElement(endTime.getMinutes())}`;
   }
 
   const iconName = getIconNameForTags(tags);
 
   const displayTags = tags.length > 0 ? `🏷 ${tags.join(' 🏷 ')}` : '';
 
+  const durationInMin = (endTime.getTime() - startTime.getTime()) / 60000;
+  const durationHours = Math.floor(durationInMin / 60);
+  const durationMinutes = Math.round(durationInMin - durationHours * 60);
+
   return {
     id,
-    title: `${displayTags} 📅 ${padTimeElement(startTime.getDate())}.${padTimeElement(startTime.getMonth() + 1)}. 🕚 ${padTimeElement(startTime.getHours())}:${padTimeElement(startTime.getMinutes())}${endString}`,
+    title: `${displayTags} \t📅\t${padTimeElement(startTime.getDate())}.${padTimeElement(startTime.getMonth() + 1)}. \t🛫 ${padTimeElement(startTime.getHours())}:${padTimeElement(startTime.getMinutes())}${endString} \t📏 ${padTimeElement(durationHours)}:${padTimeElement(durationMinutes)}`,
     subtitle: `📝 ${annotation}`,
     icon: {
       path: iconName
@@ -55,7 +59,7 @@ export const parseTimecard = (timecard: TimewarriorTimecard): Timecard => {
     tags,
     startTime,
     endTime,
-    durationInMin: (endTime.getTime() - startTime.getTime()) / 60000,
+    durationInMin,
     text: {
       copy: annotation
     }
